@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: device-mqtt
+  name: device-mqtt
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: device-mqtt
+    spec:
+      containers:
+      - image: harbor.h3c.com:15101/library/device-mqtt-go:edge-0.7.1
+        name: edgex-device-mqtt
+        ports:
+        - containerPort: 4000
+        resources: {}
+        command: ["/device-mqtt", "--confdir=/custom-config"]
+        volumeMounts:
+        - mountPath: /data/db
+          name: db-data
+        - mountPath: /edgex/logs
+          name: log-data
+        - mountPath: /consul/config
+          name: consul-config
+        - mountPath: /consul/data
+          name: consul-data
+        - mountPath: /custom-config
+          name: device-config
+      #hostname: edgex-ui-go
+      restartPolicy: Always
+      volumes:
+      - name: db-data
+        hostPath:
+          path: /data/db
+      - name: log-data
+        hostPath:
+          path: /edgex/logs
+      - name: consul-config
+        hostPath:
+          path: /consul/config
+      - name: consul-data
+        hostPath:
+          path: /consul/data
+      - name: device-config
+        hostPath: 
+          path: /opt/edge_config2
+status: {}

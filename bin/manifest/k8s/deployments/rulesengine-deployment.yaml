@@ -1,0 +1,70 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: edgex-support-rulesengine
+  name: rulesengine
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        io.kompose.service: edgex-support-rulesengine
+    spec:
+      containers:
+      - image: edgexfoundry/docker-support-rulesengine:0.7.0
+        name: edgex-support-rulesengine
+        ports:
+        - containerPort: 48075
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/db
+          name: data-db
+        - mountPath: /edgex/logs
+          name: edgex-logs
+        - mountPath: /consul/config
+          name: consul-config
+        - mountPath: /consul/data
+          name: consul-data
+        - mountPath: /edgex/edgex-support-rulesengine/bootstrap.properties
+          name: bootstrap-properties
+          subPath: bootstrap.properties
+      restartPolicy: Always
+      hostname: edgex-support-rulesengine
+      volumes:
+      - name: data-db
+        hostPath:
+          path: /data/db
+      - name: edgex-logs
+        hostPath:
+          path: /edgex/logs
+      - name: consul-config
+        hostPath:
+          path: /consul/config
+      - name: consul-data
+        hostPath:
+          path: /consul/data
+      - name: bootstrap-properties
+        configMap:
+          name: ruleengine-config
+          items:
+          - key: bootstrap.properties
+            path: bootstrap.properties
+status: {}
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ruleengine-config
+data:
+  # example of a complex property defined using --from-file
+  bootstrap.properties: |
+      spring.application.name=edgex-support-rulesengine
+      spring.cloud.consul.host=edgex-core-consul
+      spring.cloud.consul.port=8500
+      spring.cloud.consul.config.profileSeparator=;
+      spring.cloud.consul.enabled=false
+      spring.profiles.active=docker
+

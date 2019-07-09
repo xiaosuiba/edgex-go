@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: device-mqtt
+  name: device-mqtt
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "49982"
+    port: 49982
+    targetPort: 49982
+  selector:
+    io.kompose.service: device-mqtt
+status:
+  loadBalancer: {}
