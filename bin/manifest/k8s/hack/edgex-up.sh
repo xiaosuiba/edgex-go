@@ -6,11 +6,11 @@ EDGEX_ROOT=$(dirname "${BASH_SOURCE}")/..
 INTERVAL=0
 SERVICE_LIST="consul-service mongo-service logging-service notifications-service metadata-service data-service 
                 command-service scheduler-service export-client-service export-distro-service rulesengine-service 
-                ui-service device-mqtt-service"
+                ui-service device-random-service"
 
 DEPLOY_LIST="consul-deployment mongo-deployment logging-deployment notifications-deployment metadata-deployment 
               data-deployment command-deployment scheduler-deployment export-client-deployment export-distro-deployment 
-              rulesengine-deployment ui-deployment device-mqtt-deployment"
+              rulesengine-deployment ui-deployment device-random-deployment"
 
 function create_services {
   for svc in $SERVICE_LIST
