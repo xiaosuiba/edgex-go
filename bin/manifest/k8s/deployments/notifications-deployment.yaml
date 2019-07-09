@@ -28,7 +28,7 @@ spec:
         - mountPath: /consul/data
           name: consul-data
       restartPolicy: Always
-      hostname: edgex-support-notifications
+      #hostname: edgex-support-notifications
       volumes:
       - name: data-db
         hostPath:

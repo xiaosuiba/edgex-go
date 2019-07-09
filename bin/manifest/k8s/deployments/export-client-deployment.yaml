@@ -28,7 +28,7 @@ spec:
         - mountPath: /consul/data
           name: consul-data
       restartPolicy: Always
-      hostname: edgex-export-client
+      #hostname: edgex-export-client
       volumes:
       - name: data-db
         hostPath:

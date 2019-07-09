@@ -31,7 +31,7 @@ spec:
           name: bootstrap-properties
           subPath: bootstrap.properties
       restartPolicy: Always
-      hostname: edgex-support-rulesengine
+      #hostname: edgex-support-rulesengine
       volumes:
       - name: data-db
         hostPath:
